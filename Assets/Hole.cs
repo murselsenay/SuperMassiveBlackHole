@@ -21,7 +21,7 @@ public class Hole : MonoBehaviour
     float x, y;
     Vector3 touchPoint;
 
-
+    public static Vector3 positions;
     public GameObject cubePrefab;
     void Start()
     {
@@ -33,6 +33,7 @@ public class Hole : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        positions = hole.transform.position;
         hole.transform.position = new Vector3(Mathf.Clamp(hole.transform.position.x, -1f, 1f), 0, Mathf.Clamp(hole.transform.position.z, -2f, 2f));//limitler
         //ekrana tıklanma olayı
         if (Input.GetMouseButton(0))
