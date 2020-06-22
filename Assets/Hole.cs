@@ -61,9 +61,10 @@ public class Hole : MonoBehaviour
         Vector3[] vertices = mesh.vertices;
         for (int i = 0; i < holeVerticesCount; i++)
         {
-            vertices[holeVertices[i]] = hole.position + offsets[i];//offset ile her köşegenin kenara olan offset değerini deliğin konumu ile birlikte ayrı ayrı tutuyoruz.
+            vertices[holeVertices[i]] = hole.position + offsets[i];//offset ile her vertex'in deliğin ortasına olan uzaklığını tutuyoruz.
+            Debug.DrawRay(hole.position, hole.position - vertices[holeVertices[i]]);
         }
-
+        
         mesh.vertices = vertices;
         meshFilter.mesh = mesh;
         meshCol.sharedMesh = mesh;
@@ -72,13 +73,15 @@ public class Hole : MonoBehaviour
     {
         for (int i = 0; i < mesh.vertices.Length; i++)
         {
-            float distance = Vector3.Distance(hole.position, mesh.vertices[i]);//deliğin ortasından mesh'in kenarlarına olan uzaklıkları değişkende tutuyoruz. 
-                                                                               //bunu da updateverticesposition fonksiyonunda bulduğumuz vertices sayısı kadar yapıyoruz ki değişiken etrafındaki her köşeden kenarlara olan uzaklığı bulmak için.
+            float distance = Vector3.Distance(hole.position, mesh.vertices[i]);//deliğin ortasından mesh'in kenarlarına(deliğin içerisinde) olan uzaklıkları değişkende tutuyoruz. 
+                                                                             //bunu da updateverticesposition fonksiyonunda bulduğumuz vertices sayısı kadar yapıyoruz ki değişiken etrafındaki her köşeden kenarlara olan uzaklığı bulmak için.
             if (distance < radius)
             {
                 holeVertices.Add(i);
                 offsets.Add(mesh.vertices[i] - hole.position);//deliğin radiusunu kenara olan uzaklıkla karşılaştırıp, kenarın deliğin her kenarına olan uzaklığını yani ofset değerini offsets listesine atıyoruz. 
+               
             }
+         
         }
         holeVerticesCount = holeVertices.Count;
     }
